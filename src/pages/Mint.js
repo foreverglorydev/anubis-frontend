@@ -39,8 +39,8 @@ const [mintAmount, setMintAmount] = useState(0);
 
                 const connectedContract = new ethers.Contract(GoldHunter_CONTRACT_ADDRESS, GoldHunter.abi, signer);
                 let chainId = await ethereum.request({ method: 'eth_chainId' });
-                console.log(chainId);
-                console.log(connectedContract);
+                let address = await ethereum.request({ method: 'eth_accounts' });
+                
 
                 const polygonChainId = "0x13881"; 
                 if (chainId !== polygonChainId) {
@@ -54,8 +54,14 @@ const [mintAmount, setMintAmount] = useState(0);
                 // await mintprice.wait();
                 console.log(mintprice/(10**18));
                 mintprice = mintprice/(10**18);
-                let stake = true; 
-                const options = {value: ethers.utils.parseEther(String(mintprice))}
+                let stake = false; 
+                const options = {value: ethers.utils.parseEther(String(mintprice))};
+
+                    // console.log(address[0]);
+                    // console.log('address');
+                    // let approveState = await connectedContract.setApprovalForAll(address[0], true);   
+                    // console.log("Approving...please wait.");
+                    // await approveState.wait();
 
                 let nftTxn = await connectedContract.mint(mintAmount, stake, options);
                 console.log("Mining...please wait.");
